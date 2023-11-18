@@ -1,0 +1,45 @@
+@font-face{
+    font-family:'digital-clock-font';
+    src: url('https://www.1001fonts.com/download/font/digital-7.regular.ttf');
+   }
+
+
+#display{
+    text-align: right;
+}
+div {
+    border: black solid 2px;
+    justify-content: center;
+}
+
+p {
+    font-family: 'digital-clock-font';
+}
+
+#container {
+    display: flex;
+    flex-direction: column;
+    width: 400px;
+}
+
+#calcBottom{
+    display: flex;
+}
+
+#numberGrid{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.number{
+    flex: 0 0 32%;
+
+}
+
+#operatorGrid{
+    display: flex;
+    flex-direction: column;
+    min-width: 40px;
+}
+
