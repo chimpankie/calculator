@@ -4,7 +4,10 @@
 let a = 0;
 let b = 0;
 let operator = 0;
+let operatorFlag = 0 //true if operator has already been pressed
 let runningTotal = 0;
+let equalFlag = 0; //true if equal has been pressed once
+
 
 
 // Display variable and button query selectors
@@ -13,14 +16,53 @@ let displayContent = '';
 let display = document.querySelector('#displayText');
 let numberBtns = document.querySelectorAll('.number');
 let operatorBtns = document.querySelectorAll('.operator');
+let equalBtn = document.querySelector('#equals');
+let acBtn = document.querySelector('#ac');
+
+// Create AC button functionality
+
+acBtn.addEventListener('click', () => {
+    equalFlag = 0;
+    operatorFlag = 0;
+    displayContent = '';
+    a = 0;
+    b = 0;
+    display.textContent = 0; 
+    runningTotal = 0;
+})
+
+
+// create requireInput variable (act as flag), when true deactivates operator buttons
+
+// Act when equal button pressed - check if it's already been pressed?
+
+equalBtn.addEventListener('click', () => {
+    if (!equalFlag){
+        equalFlag = 1;
+        b = displayContent;
+        a = Number(a);
+        b = Number(b);
+        a = operate(a, b, operator);
+        display.textContent = a; 
+        operatorFlag = 0;
+    } else {
+        a = operate(a, b, operator);
+        display.textContent = a; 
+        operatorFlag = 0;
+    }
+
+})
 
 
 // Act when operator button pressed
-
-// something is very broken here... 
+ 
 operatorBtns.forEach(function (operatorBtn){
     operatorBtn.addEventListener('click', () => {
-    if (operator){
+    // Checks if operator has already been pressed, if true, carries out operation
+
+    //There is a problem here - if you are using one operator then you go to change it
+    if (operatorFlag){
+        equalFlag = 0;
         b = displayContent;
         a = Number(a);
         b = Number(b);
@@ -30,11 +72,13 @@ operatorBtns.forEach(function (operatorBtn){
         display.textContent = a;
         operator = operatorBtn.textContent; 
     } else {
+        equalFlag = 0;
         a = displayContent;
         runningTotal = a;
         operator = operatorBtn.textContent;
         displayContent = '';
-        display.textContent = 0; 
+        display.textContent = a;
+        operatorFlag = 1;
     }
 })
 })
@@ -43,6 +87,7 @@ operatorBtns.forEach(function (operatorBtn){
 
 numberBtns.forEach(function (numberBtn){
     numberBtn.addEventListener('click', () => {
+        equalFlag = 0;
         displayContent += numberBtn.textContent;
         display.textContent = displayContent;
     })
