@@ -43,11 +43,13 @@ equalBtn.addEventListener('click', () => {
         a = Number(a);
         b = Number(b);
         a = operate(a, b, operator);
+        displayContent = a;
         display.textContent = a; 
         operatorFlag = 0;
     } else {
         a = operate(a, b, operator);
         display.textContent = a; 
+        displayContent = a;
         operatorFlag = 0;
     }
 
