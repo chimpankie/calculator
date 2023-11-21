@@ -7,6 +7,7 @@ let operator = 0;
 let operatorFlag = 0 //true if operator has already been pressed
 let runningTotal = 0;
 let equalFlag = 0; //true if equal has been pressed once
+let requireInput = 1; //use flag to make sure pressing equals doesn't crash calculator
 
 
 
@@ -29,15 +30,18 @@ acBtn.addEventListener('click', () => {
     b = 0;
     display.textContent = 0; 
     runningTotal = 0;
+    requireInput = 1;
 })
 
 
 // create requireInput variable (act as flag), when true deactivates operator buttons
 
 // Act when equal button pressed - check if it's already been pressed?
-
+// requireInput is to stop you crashing calculator by just pressing enter
 equalBtn.addEventListener('click', () => {
-    if (!equalFlag){
+    if (requireInput){
+
+    } else if (!equalFlag){
         equalFlag = 1;
         b = displayContent;
         a = Number(a);
@@ -46,7 +50,7 @@ equalBtn.addEventListener('click', () => {
         displayContent = a;
         display.textContent = a; 
         operatorFlag = 0;
-    } else {
+    } else if (equalFlag) {
         a = operate(a, b, operator);
         display.textContent = a; 
         displayContent = a;
@@ -63,7 +67,9 @@ operatorBtns.forEach(function (operatorBtn){
     // Checks if operator has already been pressed, if true, carries out operation
 
     //There is a problem here - if you are using one operator then you go to change it
-    if (operatorFlag){
+    if (requireInput){
+        operator = operatorBtn.textContent;
+    } else if (operatorFlag){
         equalFlag = 0;
         b = displayContent;
         a = Number(a);
@@ -73,7 +79,7 @@ operatorBtns.forEach(function (operatorBtn){
         displayContent = '';
         display.textContent = a;
         operator = operatorBtn.textContent; 
-    } else {
+    } else if (!operatorFlag){
         equalFlag = 0;
         a = displayContent;
         runningTotal = a;
@@ -81,7 +87,8 @@ operatorBtns.forEach(function (operatorBtn){
         displayContent = '';
         display.textContent = a;
         operatorFlag = 1;
-    }
+        requireInput = 1;
+    } 
 })
 })
 
@@ -92,6 +99,7 @@ numberBtns.forEach(function (numberBtn){
         equalFlag = 0;
         displayContent += numberBtn.textContent;
         display.textContent = displayContent;
+        requireInput = 0;
     })
 })
 
