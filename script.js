@@ -22,6 +22,13 @@ let numberBtns = document.querySelectorAll('.number');
 let operatorBtns = document.querySelectorAll('.operator');
 let equalBtn = document.querySelector('#equals');
 let acBtn = document.querySelector('#ac');
+let pointBtn = document.querySelector('#point');
+
+// Disable point button when pressed once
+
+pointBtn.addEventListener('click', () =>{ 
+    pointBtn.disabled = true; 
+})
 
 // Create AC button functionality
 
@@ -31,7 +38,7 @@ acBtn.addEventListener('click', () => {
     displayContent = '';
     a = 0;
     b = 0;
-    operator = 0;git
+    operator = 0;
     display.textContent = 0; 
     runningTotal = 0;
     requireInput = 1;
@@ -56,11 +63,13 @@ equalBtn.addEventListener('click', () => {
         displayContent = a;
         display.textContent = a; 
         operatorFlag = 0;}
+        pointBtn.disabled = false;
     } else if (equalFlag) {
         a = operate(a, b, operator);
         display.textContent = a; 
         displayContent = a;
         operatorFlag = 0;
+        pointBtn.disabled = false;
     }
 
 })
@@ -75,6 +84,7 @@ operatorBtns.forEach(function (operatorBtn){
     if (requireInput){
         operator = operatorBtn.textContent;
         operationsNumber++;
+        pointBtn.disabled = false;
     } else if (operatorFlag){
         equalFlag = 0;
         b = displayContent;
@@ -91,6 +101,7 @@ operatorBtns.forEach(function (operatorBtn){
         operator = operatorBtn.textContent; 
         operationsNumber++;
         }
+        pointBtn.disabled = false;
     } else if (!operatorFlag){
         equalFlag = 0;
         a = displayContent;
@@ -101,6 +112,7 @@ operatorBtns.forEach(function (operatorBtn){
         operatorFlag = 1;
         requireInput = 1;
         operationsNumber++;
+        pointBtn.disabled = false;
     } 
 })
 })
