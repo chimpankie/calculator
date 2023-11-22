@@ -31,7 +31,7 @@ acBtn.addEventListener('click', () => {
     displayContent = '';
     a = 0;
     b = 0;
-    operator = 0;
+    operator = 0;git
     display.textContent = 0; 
     runningTotal = 0;
     requireInput = 1;
@@ -43,19 +43,19 @@ acBtn.addEventListener('click', () => {
 // requireInput is to stop you crashing calculator by just pressing enter
 equalBtn.addEventListener('click', () => {
     if (requireInput || operationsNumber<1){
-
-    } else if (operator === "/" && b === 0) {
-        alert("Nice try, please try again");
-        acBtn.click();
     } else if (!equalFlag){
         equalFlag = 1;
         b = displayContent;
         a = Number(a);
         b = Number(b);
+        if (operator === "/" && b===0){
+            alert("Nice try, please try again");
+            acBtn.click();
+        } else {
         a = operate(a, b, operator);
         displayContent = a;
         display.textContent = a; 
-        operatorFlag = 0;
+        operatorFlag = 0;}
     } else if (equalFlag) {
         a = operate(a, b, operator);
         display.textContent = a; 
@@ -76,14 +76,14 @@ operatorBtns.forEach(function (operatorBtn){
         operator = operatorBtn.textContent;
         operationsNumber++;
     } else if (operatorFlag){
-        if (operator === '/' && b === 0){
-            alert("Nice try, please try again");
-            acBtn.click();
-        } else {
         equalFlag = 0;
         b = displayContent;
         a = Number(a);
         b = Number(b);
+        if (operator === '/' && b ===0){
+            alert("Nice try, please try again");
+            acBtn.click();
+        } else {
         a = operate(a, b, operator);
         console.log(a);
         displayContent = '';
