@@ -1,4 +1,6 @@
 
+// There is still an issue with pressing equals when you've entered just one number
+
 // variables to carry out an operation
 
 let a = 0;
@@ -8,6 +10,7 @@ let operatorFlag = 0 //true if operator has already been pressed
 let runningTotal = 0;
 let equalFlag = 0; //true if equal has been pressed once
 let requireInput = 1; //use flag to make sure pressing equals doesn't crash calculator
+let operationsNumber = 0;
 
 
 
@@ -31,6 +34,7 @@ acBtn.addEventListener('click', () => {
     display.textContent = 0; 
     runningTotal = 0;
     requireInput = 1;
+    operationsNumber = 0;
 })
 
 
@@ -39,8 +43,11 @@ acBtn.addEventListener('click', () => {
 // Act when equal button pressed - check if it's already been pressed?
 // requireInput is to stop you crashing calculator by just pressing enter
 equalBtn.addEventListener('click', () => {
-    if (requireInput){
+    if (requireInput || operationsNumber<1){
 
+    } else if (operator === "/" && b === 0) {
+        alert("Nice try, please try again");
+        acBtn.click();
     } else if (!equalFlag){
         equalFlag = 1;
         b = displayContent;
@@ -66,9 +73,9 @@ operatorBtns.forEach(function (operatorBtn){
     operatorBtn.addEventListener('click', () => {
     // Checks if operator has already been pressed, if true, carries out operation
 
-    //There is a problem here - if you are using one operator then you go to change it
     if (requireInput){
         operator = operatorBtn.textContent;
+        operationsNumber++;
     } else if (operatorFlag){
         equalFlag = 0;
         b = displayContent;
@@ -79,6 +86,7 @@ operatorBtns.forEach(function (operatorBtn){
         displayContent = '';
         display.textContent = a;
         operator = operatorBtn.textContent; 
+        operationsNumber++;
     } else if (!operatorFlag){
         equalFlag = 0;
         a = displayContent;
@@ -88,6 +96,7 @@ operatorBtns.forEach(function (operatorBtn){
         display.textContent = a;
         operatorFlag = 1;
         requireInput = 1;
+        operationsNumber++;
     } 
 })
 })
