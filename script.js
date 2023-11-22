@@ -31,6 +31,7 @@ acBtn.addEventListener('click', () => {
     displayContent = '';
     a = 0;
     b = 0;
+    operator = 0;
     display.textContent = 0; 
     runningTotal = 0;
     requireInput = 1;
@@ -38,9 +39,7 @@ acBtn.addEventListener('click', () => {
 })
 
 
-// create requireInput variable (act as flag), when true deactivates operator buttons
 
-// Act when equal button pressed - check if it's already been pressed?
 // requireInput is to stop you crashing calculator by just pressing enter
 equalBtn.addEventListener('click', () => {
     if (requireInput || operationsNumber<1){
@@ -77,6 +76,10 @@ operatorBtns.forEach(function (operatorBtn){
         operator = operatorBtn.textContent;
         operationsNumber++;
     } else if (operatorFlag){
+        if (operator === '/' && b === 0){
+            alert("Nice try, please try again");
+            acBtn.click();
+        } else {
         equalFlag = 0;
         b = displayContent;
         a = Number(a);
@@ -87,6 +90,7 @@ operatorBtns.forEach(function (operatorBtn){
         display.textContent = a;
         operator = operatorBtn.textContent; 
         operationsNumber++;
+        }
     } else if (!operatorFlag){
         equalFlag = 0;
         a = displayContent;
