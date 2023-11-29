@@ -1,5 +1,4 @@
-
-// There is still an issue with pressing equals when you've entered just one number
+//Why can I still add numbers after an operation? 
 
 // variables to carry out an operation
 
@@ -10,11 +9,11 @@ let operatorFlag = 0 //true if operator has already been pressed
 let runningTotal = 0;
 let equalFlag = 0; //true if equal has been pressed once
 let requireInput = 1; //use flag to make sure pressing equals doesn't crash calculator
-let operationsNumber = 0;
+let operationsNumber = 0; //use to stop pressing equal on a number crashing calculator
 
 
 
-// Display variable and button query selectors
+// Display and button query selectors
 
 let displayContent = '';
 let display = document.querySelector('#displayText');
@@ -22,7 +21,23 @@ let numberBtns = document.querySelectorAll('.number');
 let operatorBtns = document.querySelectorAll('.operator');
 let equalBtn = document.querySelector('#equals');
 let acBtn = document.querySelector('#ac');
-let pointBtn = document.querySelector('#point');
+let pointBtn = document.querySelector('#buttonPeriod');
+let backBtn = document.querySelector('.backspace');
+
+
+// Backspace button functionality - deletes last char pressed
+
+backBtn.addEventListener('click', () =>{
+    if(displayContent.length === 0){
+
+    } else if (displayContent.length ===1){
+        display.textContent = '0';
+        displayContent = '';
+    } else {
+    displayContent = displayContent.slice(0, -1);
+    display.textContent = displayContent; 
+    }
+})
 
 // Disable point button when pressed once
 
@@ -30,7 +45,7 @@ pointBtn.addEventListener('click', () =>{
     pointBtn.disabled = true; 
 })
 
-// Create AC button functionality
+// Create AC button functionality, resets everything to starting position
 
 acBtn.addEventListener('click', () => {
     equalFlag = 0;
@@ -47,10 +62,12 @@ acBtn.addEventListener('click', () => {
 
 
 
-// requireInput is to stop you crashing calculator by just pressing enter
+// requireInput is to stop you crashing calculator by just pressing equals
 equalBtn.addEventListener('click', () => {
+    //if input required and no operators chosen, nothing executes
     if (requireInput || operationsNumber<1){
     } else if (!equalFlag){
+        //If equals has not already been pressed
         equalFlag = 1;
         b = displayContent;
         a = Number(a);
@@ -65,6 +82,7 @@ equalBtn.addEventListener('click', () => {
         operatorFlag = 0;}
         pointBtn.disabled = false;
     } else if (equalFlag) {
+        //If equal has already been pressed carry out same operation
         a = operate(a, b, operator);
         display.textContent = a; 
         displayContent = a;
@@ -121,14 +139,50 @@ operatorBtns.forEach(function (operatorBtn){
 
 numberBtns.forEach(function (numberBtn){
     numberBtn.addEventListener('click', () => {
+        numberPress(numberBtn);
+/*      This functionality used to be in the event listener but had to be
+        seperated out to allow for keyboard control
+
+         console.log(numberBtn);
+        
         equalFlag = 0;
         displayContent += numberBtn.textContent;
         display.textContent = displayContent;
-        requireInput = 0;
+        requireInput = 0; */
     })
 })
 
+//Function works for screen click or key press
+function numberPress(numberBtn){
+    console.log(numberBtn);
+        
+    equalFlag = 0;
+    displayContent += numberBtn.textContent;
+    display.textContent = displayContent;
+    requireInput = 0;
+}
 
+//listens for keydown and then passes it to function 
+
+// it keeps doing both?? 
+window.addEventListener('keydown', (e) => {
+    let hasNumber = /\d/;   
+    let key = e.key;
+    console.log(key);
+    if (hasNumber.test(key)){
+        let keyPress = `button${e.key}`; 
+        let buttonPress = document.querySelector(`#${keyPress}`);
+        numberPress(buttonPress);
+    } else if (key === '.'){ 
+        let keyPress = 'buttonPeriod';
+        let buttonPress = document.querySelector(`#buttonPeriod`);
+        numberPress(buttonPress);
+    }
+})
+    
+
+
+    
 
 // operator function
 
