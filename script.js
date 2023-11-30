@@ -1,4 +1,4 @@
-//Why can I still add numbers after an operation? 
+//Why can I still add numbers after an operation? This is the next job
 
 // variables to carry out an operation
 
@@ -160,6 +160,9 @@ function operatorPress(operatorBtn){
 
 //Function works for screen click or key press
 function numberPress(numberBtn){
+    if (equalFlag){
+        acBtn.click();
+    }
     console.log(numberBtn);
         
     equalFlag = 0;
