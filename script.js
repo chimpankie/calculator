@@ -97,41 +97,7 @@ equalBtn.addEventListener('click', () => {
  
 operatorBtns.forEach(function (operatorBtn){
     operatorBtn.addEventListener('click', () => {
-    // Checks if operator has already been pressed, if true, carries out operation
-
-    if (requireInput){
-        operator = operatorBtn.textContent;
-        operationsNumber++;
-        pointBtn.disabled = false;
-    } else if (operatorFlag){
-        equalFlag = 0;
-        b = displayContent;
-        a = Number(a);
-        b = Number(b);
-        if (operator === '/' && b ===0){
-            alert("Nice try, please try again");
-            acBtn.click();
-        } else {
-        a = operate(a, b, operator);
-        console.log(a);
-        displayContent = '';
-        display.textContent = a;
-        operator = operatorBtn.textContent; 
-        operationsNumber++;
-        }
-        pointBtn.disabled = false;
-    } else if (!operatorFlag){
-        equalFlag = 0;
-        a = displayContent;
-        runningTotal = a;
-        operator = operatorBtn.textContent;
-        displayContent = '';
-        display.textContent = a;
-        operatorFlag = 1;
-        requireInput = 1;
-        operationsNumber++;
-        pointBtn.disabled = false;
-    } 
+        operatorPress(operatorBtn);
 })
 })
 
@@ -152,6 +118,46 @@ numberBtns.forEach(function (numberBtn){
     })
 })
 
+//works for screen click or key press
+
+function operatorPress(operatorBtn){
+ // Checks if operator has already been pressed, if true, carries out operation
+
+ if (requireInput){
+    operator = operatorBtn.textContent;
+    operationsNumber++;
+    pointBtn.disabled = false;
+} else if (operatorFlag){
+    equalFlag = 0;
+    b = displayContent;
+    a = Number(a);
+    b = Number(b);
+    if (operator === '/' && b ===0){
+        alert("Nice try, please try again");
+        acBtn.click();
+    } else {
+    a = operate(a, b, operator);
+    console.log(a);
+    displayContent = '';
+    display.textContent = a;
+    operator = operatorBtn.textContent; 
+    operationsNumber++;
+    }
+    pointBtn.disabled = false;
+} else if (!operatorFlag){
+    equalFlag = 0;
+    a = displayContent;
+    runningTotal = a;
+    operator = operatorBtn.textContent;
+    displayContent = '';
+    display.textContent = a;
+    operatorFlag = 1;
+    requireInput = 1;
+    operationsNumber++;
+    pointBtn.disabled = false;
+} 
+}
+
 //Function works for screen click or key press
 function numberPress(numberBtn){
     console.log(numberBtn);
@@ -164,19 +170,37 @@ function numberPress(numberBtn){
 
 //listens for keydown and then passes it to function 
 
-// it keeps doing both?? 
+// now let's work on the operators...
 window.addEventListener('keydown', (e) => {
-    let hasNumber = /\d/;   
+    let hasNumber = /\d/; 
+    let keyPress = ''  
     let key = e.key;
     console.log(key);
     if (hasNumber.test(key)){
-        let keyPress = `button${e.key}`; 
+        keyPress = `button${e.key}`; 
         let buttonPress = document.querySelector(`#${keyPress}`);
         numberPress(buttonPress);
     } else if (key === '.'){ 
-        let keyPress = 'buttonPeriod';
+        keyPress = 'buttonPeriod';
         let buttonPress = document.querySelector(`#buttonPeriod`);
         numberPress(buttonPress);
+    } else if (key === '*' || key === '/' || key === '+' || key === '-'){
+        switch (key){
+        case '*':
+            keyPress = 'multiply';
+            break;
+        case '+':
+            keyPress = 'plus';
+            break;
+        case '-':
+            keyPress = 'minus';
+            break;
+        case '/':
+            keyPress = 'divide';
+            break;
+    }
+        let buttonPress = document.querySelector(`#${keyPress}`);
+        operatorPress(buttonPress);
     }
 })
     
