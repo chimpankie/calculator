@@ -1,4 +1,4 @@
-//Why can I still add numbers after an operation? This is the next job
+//next stop - enter button and backspace
 
 // variables to carry out an operation
 
@@ -25,9 +25,9 @@ let pointBtn = document.querySelector('#buttonPeriod');
 let backBtn = document.querySelector('.backspace');
 
 
-// Backspace button functionality - deletes last char pressed
+//Backspace function - deletes last char
 
-backBtn.addEventListener('click', () =>{
+function backspace(){
     if(displayContent.length === 0){
 
     } else if (displayContent.length ===1){
@@ -37,6 +37,12 @@ backBtn.addEventListener('click', () =>{
     displayContent = displayContent.slice(0, -1);
     display.textContent = displayContent; 
     }
+}
+
+// Backspace click event listener
+
+backBtn.addEventListener('click', () =>{
+  backspace();
 })
 
 // Disable point button when pressed once
@@ -60,35 +66,37 @@ acBtn.addEventListener('click', () => {
     operationsNumber = 0;
 })
 
-
+function equals(){
+        //if input required and no operators chosen, nothing executes
+        if (requireInput || operationsNumber<1){
+        } else if (!equalFlag){
+            //If equals has not already been pressed
+            equalFlag = 1;
+            b = displayContent;
+            a = Number(a);
+            b = Number(b);
+            if (operator === "/" && b===0){
+                alert("Nice try, please try again");
+                acBtn.click();
+            } else {
+            a = operate(a, b, operator);
+            displayContent = a;
+            display.textContent = a; 
+            operatorFlag = 0;}
+            pointBtn.disabled = false;
+        } else if (equalFlag) {
+            //If equal has already been pressed carry out same operation
+            a = operate(a, b, operator);
+            display.textContent = a; 
+            displayContent = a;
+            operatorFlag = 0;
+            pointBtn.disabled = false;
+        }
+}
 
 // requireInput is to stop you crashing calculator by just pressing equals
 equalBtn.addEventListener('click', () => {
-    //if input required and no operators chosen, nothing executes
-    if (requireInput || operationsNumber<1){
-    } else if (!equalFlag){
-        //If equals has not already been pressed
-        equalFlag = 1;
-        b = displayContent;
-        a = Number(a);
-        b = Number(b);
-        if (operator === "/" && b===0){
-            alert("Nice try, please try again");
-            acBtn.click();
-        } else {
-        a = operate(a, b, operator);
-        displayContent = a;
-        display.textContent = a; 
-        operatorFlag = 0;}
-        pointBtn.disabled = false;
-    } else if (equalFlag) {
-        //If equal has already been pressed carry out same operation
-        a = operate(a, b, operator);
-        display.textContent = a; 
-        displayContent = a;
-        operatorFlag = 0;
-        pointBtn.disabled = false;
-    }
+    equals();
 
 })
 
@@ -160,6 +168,7 @@ function operatorPress(operatorBtn){
 
 //Function works for screen click or key press
 function numberPress(numberBtn){
+    //checks if equal has been pressed and if so resets display before adding numbers
     if (equalFlag){
         acBtn.click();
     }
@@ -187,6 +196,7 @@ window.addEventListener('keydown', (e) => {
         keyPress = 'buttonPeriod';
         let buttonPress = document.querySelector(`#buttonPeriod`);
         numberPress(buttonPress);
+        pointBtn.disabled = true; 
     } else if (key === '*' || key === '/' || key === '+' || key === '-'){
         switch (key){
         case '*':
@@ -204,6 +214,10 @@ window.addEventListener('keydown', (e) => {
     }
         let buttonPress = document.querySelector(`#${keyPress}`);
         operatorPress(buttonPress);
+    } else if (key === 'Backspace'){
+        backspace();
+    } else if (key === 'Enter'){
+        equals();
     }
 })
     
