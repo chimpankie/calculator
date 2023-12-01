@@ -10,7 +10,7 @@ let runningTotal = 0;
 let equalFlag = 0; //true if equal has been pressed once
 let requireInput = 1; //use flag to make sure pressing equals doesn't crash calculator
 let operationsNumber = 0; //use to stop pressing equal on a number crashing calculator
-
+let pointFlag = 0;
 
 
 // Display and button query selectors
@@ -49,6 +49,7 @@ backBtn.addEventListener('click', () =>{
 
 pointBtn.addEventListener('click', () =>{ 
     pointBtn.disabled = true; 
+    pointFlag = 1;
 })
 
 // Create AC button functionality, resets everything to starting position
@@ -64,6 +65,8 @@ acBtn.addEventListener('click', () => {
     runningTotal = 0;
     requireInput = 1;
     operationsNumber = 0;
+    pointFlag = 0;
+    pointBtn.disabled = false;
 })
 
 function equals(){
@@ -84,6 +87,7 @@ function equals(){
             display.textContent = a; 
             operatorFlag = 0;}
             pointBtn.disabled = false;
+            pointFlag = 0;
         } else if (equalFlag) {
             //If equal has already been pressed carry out same operation
             a = operate(a, b, operator);
@@ -91,6 +95,7 @@ function equals(){
             displayContent = a;
             operatorFlag = 0;
             pointBtn.disabled = false;
+            pointFlag = 0;
         }
 }
 
@@ -134,7 +139,7 @@ function operatorPress(operatorBtn){
  if (requireInput){
     operator = operatorBtn.textContent;
     operationsNumber++;
-    pointBtn.disabled = false;
+
 } else if (operatorFlag){
     equalFlag = 0;
     b = displayContent;
@@ -151,7 +156,7 @@ function operatorPress(operatorBtn){
     operator = operatorBtn.textContent; 
     operationsNumber++;
     }
-    pointBtn.disabled = false;
+
 } else if (!operatorFlag){
     equalFlag = 0;
     a = displayContent;
@@ -162,8 +167,10 @@ function operatorPress(operatorBtn){
     operatorFlag = 1;
     requireInput = 1;
     operationsNumber++;
-    pointBtn.disabled = false;
+
 } 
+    pointBtn.disabled = true; 
+    pointFlag = 0;
 }
 
 //Function works for screen click or key press
@@ -193,10 +200,14 @@ window.addEventListener('keydown', (e) => {
         let buttonPress = document.querySelector(`#${keyPress}`);
         numberPress(buttonPress);
     } else if (key === '.'){ 
+        if (pointFlag ===1 ){
+
+        } else {
         keyPress = 'buttonPeriod';
         let buttonPress = document.querySelector(`#buttonPeriod`);
         numberPress(buttonPress);
         pointBtn.disabled = true; 
+        pointFlag = 1;}
     } else if (key === '*' || key === '/' || key === '+' || key === '-'){
         switch (key){
         case '*':
